@@ -1,0 +1,18 @@
+# Mantiene despierto el servidor de Contesa (Render, plan gratis): si pasa 15
+# minutos sin visitas se duerme y la siguiente visita tarda casi un minuto.
+name: Mantener despierto el servidor
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  despertar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Visitar el servidor
+        run: curl -fsS --max-time 90 https://aura-server-oisv.onrender.com/health > /dev/null || true
